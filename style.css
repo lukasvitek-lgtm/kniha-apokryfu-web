@@ -1,0 +1,246 @@
+/* Kniha apokryfů — web */
+
+@font-face { font-family: "Latino URW"; src: url("fonts/latino-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap; ascent-override: 80%; descent-override: 20%; line-gap-override: 0%; }
+@font-face { font-family: "Latino URW"; src: url("fonts/latino-RegularItalic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap; ascent-override: 80%; descent-override: 20%; line-gap-override: 0%; }
+@font-face { font-family: "Latino URW"; src: url("fonts/latino-Medium.woff2") format("woff2");
+  font-weight: 500; font-style: normal; font-display: swap; ascent-override: 80%; descent-override: 20%; line-gap-override: 0%; }
+@font-face { font-family: "Latino URW"; src: url("fonts/latino-MediumItalic.woff2") format("woff2");
+  font-weight: 500; font-style: italic; font-display: swap; ascent-override: 80%; descent-override: 20%; line-gap-override: 0%; }
+@font-face { font-family: "Norman"; src: url("fonts/norman.woff2") format("woff2"); font-display: block; }
+
+:root {
+  --ink: #231f20;          /* barva sazby z PDF */
+  --crack: #454142;        /* barva prasklin, jak vychází na obrazovce; stejnou mají i pruhy */
+  --paper: #ffffff;
+  --desk: #e8e6e3;         /* podklad pod dvojstranami */
+  --muted: #6b6566;
+  --serif: "Latino URW", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --display: "Norman", "Latino URW", Georgia, serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+/* ---------------------------------------------------------------- TITUL */
+
+/* praskliny přes celou plochu titulu, od okraje po okraj */
+.title { position: relative; overflow: hidden; }
+.cracks {
+  position: absolute; inset: 0;
+  background: url("img/praskliny.png") left top / cover no-repeat;   /* bez deformace, jen zvětšení */
+  pointer-events: none;
+}
+.cover {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(24px, 6vh, 72px) 0;
+}
+.stage {
+  --u: calc(100cqw / 746.079);   /* 1u = 1 bod obálky */
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, 1400px, calc((100svh - 230px) * 746.079 / 566.929));
+  min-width: min(100%, 520px);
+  aspect-ratio: 746.079 / 566.929;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.bar {
+  position: absolute;
+  height: calc(14 * var(--u));
+  background: var(--crack);
+}
+/* pruhy vycházejí od okraje okna a končí dál od středu */
+.bar.from-left { left: -100vw; }
+.bar-1 { top: calc(143.5 * var(--u)); width: calc(100vw + 330 * var(--u)); }
+.bar-2 { top: calc(232.5 * var(--u)); width: calc(100vw + 160 * var(--u)); }
+.bar-3 { top: calc(388.5 * var(--u)); left: calc(660 * var(--u)); width: calc(100vw + 90 * var(--u)); }
+
+.cover h1, .cover .author {
+  position: absolute;
+  margin: 0;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: -0.005em;
+  text-shadow: 0 0 2px var(--paper), 0 0 6px var(--paper);   /* text zůstane čitelný i přes prasklinu */
+}
+.cover h1 { inset: 0; font-size: calc(80 * var(--u)); }
+.cover h1 span { position: absolute; margin-top: -0.8em; right: max(16px, calc(110 * var(--u))); }
+.cover h1 .l1 { top: calc(180 * var(--u)); }
+.cover h1 .l2 { top: calc(273 * var(--u)); }
+.cover .author { font-size: calc(62 * var(--u)); right: calc(160 * var(--u)); top: calc(512 * var(--u)); margin-top: -0.8em; }
+
+.enter {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  padding-block: clamp(28px, 5vh, 56px) clamp(40px, 8vh, 96px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  width: min(100%, 1400px, calc((100svh - 230px) * 746.079 / 566.929));
+  min-width: min(100%, 520px);
+  max-width: 100%;
+  margin-inline: auto;
+}
+.enter a {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: 18px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(20px, 2.4vw, 30px);
+  line-height: 1.15;
+  background: var(--paper);
+  padding: 8px 0 8px 12px;
+}
+.enter small {
+  grid-column: 1;
+  font-size: .62em;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+}
+.enter .arrow {
+  grid-column: 2; grid-row: 1 / span 2;
+  display: block;
+  width: 56px; height: 9px;
+  background: var(--crack);
+  transition: width .25s ease;
+}
+.enter a:hover .arrow, .enter a:focus-visible .arrow { width: 96px; }
+
+.imprint {
+  padding-block: 0 32px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- UKÁZKA */
+
+body.sample { background: var(--desk); }
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 24px;
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  max-width: 1240px;
+  margin-inline: auto;
+}
+.topbar a { text-decoration: none; font-weight: 500; font-size: 18px; }
+.topbar a::before {
+  content: ""; display: inline-block; width: 28px; height: 6px; background: var(--crack);
+  vertical-align: middle; margin-right: 12px; transition: width .2s ease;
+}
+.topbar a:hover::before { width: 40px; }
+.topbar .where { font-style: italic; color: var(--muted); font-size: 15px; }
+
+.book {
+  display: grid;
+  gap: clamp(32px, 5vw, 64px);
+  padding-block: 8px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---- sazba: dvojstrana ze dvou stránek 130 × 200 mm ---- */
+
+.dvojstrana {
+  container-type: inline-size;
+  --s: 50cqw;                    /* šířka jedné stránky */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  box-shadow: 0 1px 2px rgba(35,31,32,.12), 0 14px 40px -12px rgba(35,31,32,.28);
+}
+
+.stranka {
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 130 / 200;
+  background: var(--paper);
+  font-size: calc(var(--s) / 36.85);       /* 10 b. písma na stránce šířky 368,5 b. */
+  padding: 7.4em 5.1em 3.7em 3.97em;       /* okraje ze sazby: horní, vnitřní, dolní, vnější */
+}
+.stranka:nth-child(2) { padding-left: 5.1em; padding-right: 3.97em; }
+.stranka.uvodni { padding-top: 6.2em; }
+
+.stranka h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 2.5em;            /* 25 b. */
+  line-height: 1;
+  margin: 0 0 3em;
+}
+.stranka p {
+  margin: 0;
+  line-height: 1.1;            /* 10/11 b. */
+  text-indent: 1.13em;
+  text-align: justify;
+  hyphens: auto;
+}
+.stranka p.prvni,
+.stranka p.pokracovani { text-indent: 0; }
+.stranka p.pokracuje { text-align-last: justify; }   /* odstavec pokračuje na další stránce */
+.stranka p.hvezdicky { text-indent: 0; text-align: center; }
+.stranka p.podpis { text-align: right; font-style: italic; margin-top: 1.1em; }
+.stranka sup { font-size: .6em; font-style: italic; font-weight: 500; line-height: 0; }
+
+.poznamky { margin: auto 0 0; padding: .5em 0 0 3.5em; list-style: upper-roman; font-size: .8em; font-style: italic; line-height: 1.1; }
+.poznamky::before { content: ""; display: block; width: 7.1em; margin: 0 0 .6em -3.5em; border-top: 1px solid var(--ink); }
+
+.folio { margin: auto auto 0; text-decoration: underline; text-underline-offset: .25em; }
+.poznamky + .folio { margin-top: 6em; }
+
+.ilustrace { display: block; width: 100%; margin-top: -.3em; }
+
+.source {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-block: 0 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* užší okno: stránky pod sebou */
+@media (max-width: 900px) {
+  .dvojstrana { --s: 100cqw; grid-template-columns: 1fr; width: min(100%, 560px); gap: 24px; box-shadow: none; }
+  .stranka { box-shadow: 0 1px 2px rgba(35,31,32,.12), 0 14px 40px -12px rgba(35,31,32,.28); }
+  .stranka:nth-child(2) { padding-left: 3.97em; padding-right: 5.1em; }
+}
+/* telefon: čitelná velikost písma, stránka se protáhne podle textu */
+@media (max-width: 600px) {
+  .stranka, .stranka:nth-child(2) { font-size: 16px; aspect-ratio: auto; padding: 2.5em 1.2em 1.5em; }
+  .stranka p.pokracuje { text-align-last: auto; }
+  .topbar .where { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter .arrow, .topbar a::before { transition: none; }
+}
